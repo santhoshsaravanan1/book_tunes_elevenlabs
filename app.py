@@ -9,7 +9,7 @@ import google.generativeai as genai
 load_dotenv()
 
 # Configure Gemini API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key="AIzaSyASpYofjJXEWLMnGM-Lxucb_DZGV0Vp4EQ")
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Configure ElevenLabs

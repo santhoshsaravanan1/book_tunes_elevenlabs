@@ -5,15 +5,18 @@ from elevenlabs import ElevenLabs, save, play
 from dotenv import load_dotenv
 import google.generativeai as genai
 
-# Load environment variables
-load_dotenv()
+# Load environment variables (optional if using direct keys)
+# load_dotenv()
+
+# Directly provide API keys here (not recommended for production)
+ELEVENLABS_API_KEY = "sk_d9fdfde3873fc475c9e6d2e7997f44b2b988bbe360016382"
+GEMINI_API_KEY = "AIzaSyASpYofjJXEWLMnGM-Lxucb_DZGV0Vp4EQ"
 
 # Configure Gemini API
-genai.configure(api_key="AIzaSyASpYofjJXEWLMnGM-Lxucb_DZGV0Vp4EQ")
+genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Configure ElevenLabs
-ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 elevenlabs = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 
 # Emotion-to-sound prompts
@@ -37,12 +40,12 @@ emotion_prompts = {
 
 # Sentiment analysis
 def analyze_sentiment(user_text: str) -> list:
-    prompt = f"""Split this text into segments where the sentiment changes.
-Output single-word sentiment tags for each segment (e.g., happy, tense, calm, anxious).
-Join them with dots. No extra words.
-
-Text: """{user_text}"""
-"""
+    prompt = (
+        "Split this text into segments where the sentiment changes.\n"
+        "Output single-word sentiment tags for each segment (e.g., happy, tense, calm, anxious).\n"
+        "Join them with dots. No extra words.\n\n"
+        f"Text: \"\"\"{user_text}\"\"\""
+    )
     response = model.generate_content(prompt)
     sentiments = response.text.strip().split('.')
     return [s.strip().lower() for s in sentiments if s.strip()]
